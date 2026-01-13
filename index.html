@@ -2,68 +2,52 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>MOAINA AR</title>
+<title>MOAINA AR Portrait</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
 <style>
-  body { margin: 0; overflow: hidden; }
-  #shotBtn{
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    padding: 10px 16px; border-radius: 999px; border: none;
-    background: #e6d8c3; color:#5a4633; font-weight:600;
-    box-shadow: 0 6px 20px rgba(0,0,0,.2);
-  }
+body { margin: 0; overflow: hidden; }
+#shotBtn{
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  padding: 12px 18px; border-radius: 999px; border: none;
+  background: #e6d8c3; color:#5a4633; font-weight:600;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+}
 </style>
 </head>
 
 <body>
 
-<button id="shotBtn">📸 Take Photo with MOAINA</button>
-
-<audio id="bgSound" src="calm-music-64526.mp3" preload="auto"></audio>
+<button id="shotBtn">📸 Save Portrait</button>
 
 <a-scene embedded vr-mode-ui="enabled:false" arjs="sourceType:webcam; debugUIEnabled:false;">
 
-  <!-- CAMERA -->
-  <a-entity id="cam" camera look-controls>
+  <a-entity camera look-controls>
 
-    <!-- HUD GROUP (attached to camera) -->
-    <a-entity position="0 0 -2">
+    <!-- Higher position for portrait -->
+    <a-entity position="0 0.6 -3">
 
-      <!-- Glow panel -->
-      <a-plane width="2.4" height="1.7" color="#ffffff" opacity="0.10"></a-plane>
-
-      <!-- Crescent Moon -->
-      <a-torus radius="0.28" radius-tubular="0.06"
-        color="#e8dcc8" position="-0.8 0.5 0.02" rotation="0 0 30"
-        animation="property: rotation; to: 0 360 30; dur: 8000; loop: true">
-      </a-torus>
-
-      <!-- Hanging lights -->
-      <a-sphere radius="0.03" color="#ffdca8" position="-0.4 0.8 0.02"
-        animation="property: opacity; to: 0.3; dir: alternate; dur: 700; loop: true"></a-sphere>
-      <a-sphere radius="0.03" color="#ffdca8" position="0 0.85 0.02"
-        animation="property: opacity; to: 0.3; dir: alternate; dur: 900; loop: true"></a-sphere>
-      <a-sphere radius="0.03" color="#ffdca8" position="0.4 0.8 0.02"
-        animation="property: opacity; to: 0.3; dir: alternate; dur: 800; loop: true"></a-sphere>
+      <!-- Panel -->
+      <a-plane width="1.7" height="1.2" color="#ffffff" opacity="0.10"></a-plane>
 
       <!-- Logo -->
-      <a-image src="logo.png" position="0 0.45 0.02" scale="1.1 1.1 1.1"
-        animation="property: position; to: 0 0.65 0.02; dir: alternate; dur: 1800; loop: true">
+      <a-image 
+        src="logo.png"
+        position="0 0.35 0.02"
+        scale="0.75 0.75 0.75"
+        animation="property: position; to: 0 0.55 0.02; dir: alternate; dur: 1800; loop: true">
       </a-image>
 
-      <!-- Brand -->
-      <a-text value="MOAINA" position="0 -0.1 0.02" align="center"
-        color="#E6D8C3" scale="2.4 2.4 2.4"></a-text>
-
       <!-- Tagline -->
-      <a-text value="Quiet Taste. Pure Halal" position="0 -0.45 0.02"
-        align="center" color="#D8CBB8" scale="1.2 1.2 1.2"></a-text>
-
-      <!-- Particles -->
-      <a-entity id="particles"></a-entity>
+      <a-text 
+        value="Quiet Taste. Pure Halal"
+        position="0 -0.25 0.02"
+        align="center"
+        color="#6B4A2D"
+        scale="0.85 0.85 0.85">
+      </a-text>
 
     </a-entity>
 
@@ -72,32 +56,11 @@
 </a-scene>
 
 <script>
-/* play sound once */
-window.addEventListener('click', ()=>{
-  const s = document.getElementById('bgSound');
-  if(s && s.paused){ s.play().catch(()=>{}); }
-},{once:true});
-
-/* particles */
-const p = document.getElementById('particles');
-for(let i=0;i<25;i++){
-  const d=document.createElement('a-sphere');
-  d.setAttribute('radius','0.01');
-  d.setAttribute('color','#fff2cc');
-  const x=(Math.random()*2-1).toFixed(2);
-  const y=(Math.random()*1.2-0.6).toFixed(2);
-  const z='0.03';
-  d.setAttribute('position',`${x} ${y} ${z}`);
-  d.setAttribute('animation',`property: position; to: ${x} ${y+0.5} ${z}; dur:${1500+Math.random()*1500}; loop:true`);
-  p.appendChild(d);
-}
-
-/* screenshot */
 document.getElementById('shotBtn').onclick=()=>{
   const c=document.querySelector('canvas');
   if(!c){alert('Canvas belum siap'); return;}
   const a=document.createElement('a');
-  a.download='moaina-ar.png';
+  a.download='moaina-portrait.png';
   a.href=c.toDataURL('image/png');
   a.click();
 };
